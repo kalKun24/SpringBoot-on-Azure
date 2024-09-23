@@ -21,6 +21,7 @@ services:
       - cosmos-volume:/tmp/cosmos
 
   spring-project:
+    image: openjdk:21
     container_name: ${project-name}
     env_file:
       - .env
