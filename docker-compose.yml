@@ -1,0 +1,24 @@
+version: '3'
+services:
+  cosmos-db-emulator:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
+    ports: 
+      - "8081:8081"
+      - "10251:10251"
+      - "10252:10252"
+      - "10253:10253"
+      - "10254:10254"
+    environment:
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 10
+      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
+      # AZURE_COSMOS_EMULATOR_IP_ADDRESS_OVERRIDE: # Direct mode を利用する場合に必要
+    networks: 
+      - spring-project
+    volumes:
+      - cosmos-volume:/tmp/cosmos
+
+volumes:
+  cosmos-volume:
+
+networks:
+  spring-project:
