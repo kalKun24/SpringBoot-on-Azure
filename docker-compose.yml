@@ -1,6 +1,7 @@
 version: '3'
 services:
   cosmos-db-emulator:
+    container_name: seclearn-cosmosdb
     image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator
     ports: 
       - "8081:8081"
@@ -8,6 +9,8 @@ services:
       - "10252:10252"
       - "10253:10253"
       - "10254:10254"
+    env_file:
+      - .env
     environment:
       AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 10
       AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true"
@@ -16,6 +19,19 @@ services:
       - spring-project
     volumes:
       - cosmos-volume:/tmp/cosmos
+
+  spring-project:
+    container_name: ${project-name}
+    env_file:
+      - .env
+    ports:
+      - 8080:8080
+    tty: true
+    volumes:
+      - ./${project-name}:/app
+    working_dir: /app
+    depends_on:
+      - cosmos-db-emulator
 
 volumes:
   cosmos-volume:
